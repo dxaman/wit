@@ -94,7 +94,8 @@ const productDetails = [
 
 
 const cartDetails = [];
-
+var rewards=50;
+var discount=0;
 //click events {
 function addItem(event) {
   let btnClicked =
@@ -321,7 +322,7 @@ function Banner() {
   </ul>
   <div class='main-cart'>${DisplayProducts()}</div>
   <div class='begin'>
-    <strong>Reward Remaining: <span class='reward'>0</span></strong>
+    <strong>Reward Remaining: <span class='reward'>50</span></strong>
   </div>
   <div class='nav'>
   
@@ -346,7 +347,10 @@ function CartSideNav() {
   <h2>Cart</h2>
   <div class='cart-items'></div>
   <div class='final'>
+   <strong>Discount: ₹ <span class='discount'>0</span>.00/-</strong>
+
     <strong>Total: ₹ <span class='total'>0</span>.00/-</strong>
+
     <div class='action'>
       <button onclick='buy(1)' class='btn buy'>Purchase <i class='fas fa-credit-card' style='color:#6665dd;'></i></button>
       <button onclick='clearCart()' class='btn clear'>Clear Cart <i class='fas fa-trash' style='color:#bb342f;'></i></button>
@@ -354,6 +358,7 @@ function CartSideNav() {
   </div>
 </div>`;
 }
+
 
 function Purchase() {
   let toPay = document.getElementsByClassName("total")[0].innerText;
@@ -386,6 +391,7 @@ function Purchase() {
 function OrderConfirm() {
   let orderId = Math.round(Math.random() * 1000);
   let totalCost = document.getElementsByClassName("total")[0].innerText;
+  document.getElementsByClassName("reward")[0].innerText=0;
   return `
 <div>
   <div class='order-details'>
@@ -453,8 +459,21 @@ function CartItemsTotal() {
   let totalQty = cartDetails.reduce((total, item) => {
     return total + item.qty;
   }, 0);
-  document.getElementsByClassName("total")[0].innerText = totalPrice;
+  if(totalPrice>500){
+    discount=rewards*20/100;
+    
+  }
+  else{
+    discount=rewards*10/100;
+    
+  }
+  
+
+  
+  document.getElementsByClassName("total")[0].innerText = Math.max(totalPrice-discount,0);
   document.getElementsByClassName("total-qty")[0].innerText = totalQty;
+  document.getElementsByClassName("discount")[0].innerText = discount;
+
 }
 
 function Stocks() {
